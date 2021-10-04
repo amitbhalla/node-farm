@@ -1,27 +1,28 @@
 {
-  "name": "farm",
-  "version": "1.0.0",
-  "description": "",
-  "main": "nodefarm.js",
-  "scripts": {
-    "start": "nodemon nodefarm.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/amitbhalla/node-farm.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/amitbhalla/node-farm/issues"
-  },
-  "homepage": "https://github.com/amitbhalla/node-farm#readme",
-  "type": "module",
-  "dependencies": {
-    "slugify": "^1.6.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.13"
-  }
+    "name": "farm",
+    "version": "1.0.0",
+    "description": "",
+    "main": "nodefarm.js",
+    "scripts": {
+        "start": "nodemon nodefarm.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/amitbhalla/node-farm.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/amitbhalla/node-farm/issues"
+    },
+    "homepage": "https://github.com/amitbhalla/node-farm#readme",
+    "type": "module",
+    "dependencies": {
+        "slugify": "^1.6.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.13",
+        "prettier": "2.4.1"
+    }
 }
