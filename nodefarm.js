@@ -1,11 +1,13 @@
-const http = require('http');
-const fs = require('fs');
+const http = require("http");
+const fs = require("fs");
+const url = require("url");
+const path = require("path/posix");
 
-const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, 'utf-8');
-const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`, 'utf-8');
-const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.html`, 'utf-8');
+const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, "utf-8");
+const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`, "utf-8");
+const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.html`, "utf-8");
 
-const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, "utf-8");
 const dataObj = JSON.parse(data);
 
 
@@ -27,37 +29,38 @@ const replaceTemplate = (template, product) => {
 
 const server = http.createServer(
     (req, res) => {
-        console.log(req.url);
-        const reqURL = req.url;
+        const { query, pathname } = url.parse(req.url, true);
 
         // Overview page
-        if (reqURL === '/' || reqURL === '/overview') {
+        if (pathname === "/" || pathname === "/overview" || pathname === "/overview/") {
             const cardsHtml = dataObj.map(product => replaceTemplate(tempCard, product)).join("");
             const overviewOutput = tempOverview.replace(/{%PRODUCT_CARDS%}/g, cardsHtml);
-            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.writeHead(200, { "Content-Type": "text/html" });
             res.end(overviewOutput);
 
             // Product page
-        } else if (reqURL === '/product') {
-            res.writeHead(200, { 'Content-Type': 'text/html' });
-            res.end(`Welcome to the ${reqURL} page`);
+        } else if (pathname === "/product" || pathname === "/product/") {
+            const product = dataObj[query.id];
+            const output = replaceTemplate(tempProduct, product);
+            res.writeHead(200, { "Content-Type": "text/html" });
+            res.end(output);
 
             // api page
-        } else if (reqURL === '/api') {
-            res.writeHead(200, { 'Content-Type': 'application/json' });
+        } else if (pathname === "/api") {
+            res.writeHead(200, { "Content-Type": "application/json" });
             res.end(data);
 
             // 404 page
         } else {
-            res.writeHead(404, { 'Content-Type': 'text/html' });
-            res.end('<h3>404 - Page not found!</h3>');
+            res.writeHead(404, { "Content-Type": "text/html" });
+            res.end("<h3>404 - Page not found!</h3>");
         }
     },
 );
 
 server.listen(
-    3000, '0.0.0.0',
+    3000, "0.0.0.0",
     () => {
-        console.log('Listening to port 3000 on 0.0.0.0 ...');
+        console.log("Listening to port 3000 on 0.0.0.0 ...");
     },
 );
