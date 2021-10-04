@@ -11,6 +11,10 @@ const server = http.createServer(
         else if (pathName === "/product") {
             res.end("This is the product page!");
         }
+        else {
+            res.writeHead(404);
+            res.end("404 - Page not found.");
+        }
     }
 );
 
