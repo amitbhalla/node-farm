@@ -12,8 +12,10 @@ const server = http.createServer(
             res.end("This is the product page!");
         }
         else {
-            res.writeHead(404);
-            res.end("404 - Page not found.");
+            res.writeHead(404, {
+                "Content-Type": "text/html",
+            });
+            res.end("<h1>404 - Page not found.</h1>");
         }
     }
 );
