@@ -1,7 +1,6 @@
 const http = require("http");
 const fs = require("fs");
 const url = require("url");
-const path = require("path/posix");
 
 const tempOverview = fs.readFileSync(`${__dirname}/templates/template-overview.html`, "utf-8");
 const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`, "utf-8");
@@ -29,7 +28,14 @@ const replaceTemplate = (template, product) => {
 
 const server = http.createServer(
     (req, res) => {
-        const { query, pathname } = url.parse(req.url, true);
+        const baseURL = `http://${req.headers.host}`;
+        console.log(baseURL);
+        const requestURL = new URL(req.url, baseURL);
+        console.log(requestURL);
+        const pathname = requestURL.pathname;
+        console.log(pathname);
+        const query = requestURL.searchParams.get('id');
+        console.log(query);
 
         // Overview page
         if (pathname === "/" || pathname === "/overview" || pathname === "/overview/") {
@@ -40,7 +46,7 @@ const server = http.createServer(
 
             // Product page
         } else if (pathname === "/product" || pathname === "/product/") {
-            const product = dataObj[query.id];
+            const product = dataObj[query];
             const output = replaceTemplate(tempProduct, product);
             res.writeHead(200, { "Content-Type": "text/html" });
             res.end(output);
